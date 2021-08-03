@@ -3,5 +3,4 @@ A mobile app that displays real time near actual soil parameter readings. Also r
 The smoke alerts system helps detect iminent fire-outbreaks.
 # smartfarmapp-main
 
-# smartfarmapp-main
 
