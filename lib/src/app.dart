@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:smartfarmapp/src/screens/views/forgot_password.dart';
-import 'package:smartfarmapp/src/screens/views/login_success.dart';
-import 'package:smartfarmapp/src/screens/views/profile.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'screens/views/bottom_navigation.dart';
+import 'screens/views/forgot_password.dart';
 import 'screens/views/homepage.dart';
 import 'screens/views/loadingscreen.dart';
 import 'screens/views/login_page.dart';
+import 'screens/views/login_success.dart';
+import 'screens/views/profile.dart';
 import 'screens/views/signup_page.dart';
 
 class SmartFarmApp extends StatelessWidget {
@@ -27,24 +28,26 @@ class SmartFarmApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Smart Farm',
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      theme: ThemeData(
-        primarySwatch: customColor,
-        primaryColor: Color(0xFF008000),
+    return ProviderScope(
+      child: MaterialApp(
+        title: 'Smart Farm',
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/',
+        theme: ThemeData(
+          primarySwatch: customColor,
+          primaryColor: Color(0xFF008000),
+        ),
+        routes: {
+          '/': (context) => LoadingScreen(),
+          '/login': (context) => LoginPage(),
+          '/signup': (context) => SignUpPage(),
+          '/home': (context) => HomePage(),
+          '/bottomNavigation': (context) => BottomNavigationScreen(),
+          '/login_success': (context) => LoginSuccessScreen(),
+          '/forgot_password': (context) => ForgotPasswordScreen(),
+          '/profile': (contxet) => ProfileScreen(),
+        },
       ),
-      routes: {
-        '/': (context) => LoadingScreen(),
-        '/login': (context) => LoginPage(),
-        '/signup': (context) => SignUpPage(),
-        '/home': (context) => HomePage(),
-        '/bottomNavigation': (context) => BottomNavigationScreen(),
-        '/login_success': (context) => LoginSuccessScreen(),
-        '/forgot_password': (context) => ForgotPasswordScreen(),
-        '/profile': (contxet) => ProfileScreen(),
-      },
     );
   }
 }

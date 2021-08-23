@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'sizeconfiguration.dart';
 
 class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final sizeConfig = SizeConfig(context);
     return Column(
       children: [
         SizedBox(height: SizeConfig.screenHeight * 0.04),
@@ -15,7 +17,7 @@ class Body extends StatelessWidget {
         Text(
           "Login Success",
           style: TextStyle(
-            fontSize: getProportionateScreenWidth(30),
+            fontSize: sizeConfig.getProportionateScreenWidth(30),
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),
@@ -25,7 +27,7 @@ class Body extends StatelessWidget {
           width: SizeConfig.screenWidth * 0.6,
           child: SizedBox(
             width: double.infinity,
-            height: getProportionateScreenHeight(56),
+            height: sizeConfig.getProportionateScreenHeight(56),
             child: TextButton(
               child: Text("Let's go farming!"),
               onPressed: () {

@@ -8,19 +8,21 @@ import 'package:smartfarmapp/src/screens/widgets/sizeconfiguration.dart';
 class Password extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final sizeConfig = SizeConfig(context);
+
     return SizedBox(
       width: double.infinity,
       child: SingleChildScrollView(
         child: Padding(
-          padding:
-              EdgeInsets.symmetric(horizontal: getProportionateScreenWidth(20)),
+          padding: EdgeInsets.symmetric(
+              horizontal: sizeConfig.getProportionateScreenWidth(20)),
           child: Column(
             children: [
               SizedBox(height: SizeConfig.screenHeight * 0.04),
               Text(
                 "Forgot Password",
                 style: TextStyle(
-                  fontSize: getProportionateScreenWidth(28),
+                  fontSize: sizeConfig.getProportionateScreenWidth(28),
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
@@ -45,16 +47,17 @@ class ForgotPassForm extends StatefulWidget {
 }
 
 class _ForgotPassFormState extends State<ForgotPassForm> {
-  final _formKey = GlobalKey<FormState>();
+  final _forgotPasswordKey = GlobalKey<FormState>();
   List<String> errors = [];
   late String? email;
 
   @override
   Widget build(BuildContext context) {
-    var getProportionateScreenHeight2 = getProportionateScreenHeight;
+    final sizeConfig = SizeConfig(context);
+    var getProportionateScreenHeight2 = sizeConfig.getProportionateScreenHeight;
 
     return Form(
-      key: _formKey,
+      key: _forgotPasswordKey,
       child: Column(
         children: [
           TextFormField(
@@ -90,20 +93,16 @@ class _ForgotPassFormState extends State<ForgotPassForm> {
               labelText: "Email",
               hintText: "Enter your email",
               floatingLabelBehavior: FloatingLabelBehavior.always,
-              suffixIcon: CustomSurffixIcon(
-                  key: _formKey, svgIcon: "assets/icons/Mail.svg"),
+              suffixIcon: CustomSurffixIcon(svgIcon: "assets/icons/Mail.svg"),
             ),
           ),
           SizedBox(height: getProportionateScreenHeight2(30)),
-          FormError(
-            key: _formKey,
-            errors: errors,
-          ),
+          FormError(errors: errors),
           SizedBox(height: SizeConfig.screenHeight * 0.1),
           TextButton(
             child: Text("Continue"),
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
+              if (_forgotPasswordKey.currentState!.validate()) {
                 Navigator.pushReplacementNamed(context, '/bottomNavigation');
               }
             },
