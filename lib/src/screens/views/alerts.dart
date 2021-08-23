@@ -6,8 +6,6 @@ class Alerts extends StatefulWidget {
 }
 
 class _AlertsState extends State<Alerts> {
-  get dismissKey => null;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,12 +55,10 @@ class _AlertsState extends State<Alerts> {
             delegate: SliverChildListDelegate(
               [
                 Column(
-                  key: dismissKey,
                   children: <Widget>[
                     //i want to use a dismissal widget so if i swipe it dismisses the messages
-
                     Dismissible(
-                      key: dismissKey,
+                      key: Key('sunny, h: 30, t: 75, m: 20, pH: 7.5'),
                       child: ListTile(
                         leading: Icon(Icons.message),
                         title: Text(
@@ -73,7 +69,7 @@ class _AlertsState extends State<Alerts> {
                       onDismissed: onDismiss(),
                     ),
                     Dismissible(
-                      key: dismissKey,
+                      key: Key('rainy, h: 70, t: 35, m: 80, pH: 7.5'),
                       child: ListTile(
                         leading: Icon(Icons.message),
                         title:
@@ -84,7 +80,7 @@ class _AlertsState extends State<Alerts> {
                       onDismissed: onDismiss(),
                     ),
                     Dismissible(
-                        key: dismissKey,
+                        key: Key('dry, h: 20, t: 95, m: 25, pH: 7.5'),
                         child: ListTile(
                           leading: Icon(Icons.message),
                           title: Text(
@@ -94,16 +90,16 @@ class _AlertsState extends State<Alerts> {
                         confirmDismiss: confirmDismiss(),
                         onDismissed: onDismiss()),
                     Dismissible(
-                      key: dismissKey,
+                      key: Key('wet, h: 81, t: 15, m: 75, pH: 7.5'),
                       child: ListTile(
                         leading: Icon(Icons.message),
                         title: Text(
                             'Soil CO2 level is high kindly chcek your farm for iminent Fire outbreak'),
-                        subtitle: Text('wet, h: 80, t: 15, m: 75, pH: 7.5'),
+                        subtitle: Text('wet, h: 81, t: 15, m: 75, pH: 7.5'),
                       ),
                     ),
                     Dismissible(
-                      key: dismissKey,
+                      key: Key('wet, h: 80, t: 15, m: 75, pH: 7.5'),
                       child: ListTile(
                         leading: Icon(Icons.message),
                         title: Text(
