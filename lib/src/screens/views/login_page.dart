@@ -1,4 +1,14 @@
+import 'dart:async';
+
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/model/user.dart';
+import '../providers/auth_provider.dart';
+import '../utils/dialog.dart';
+import '../widgets/t_button.dart';
+import '../widgets/t_text_form_field.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -6,114 +16,135 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController(text: '');
+  final passwordController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
         backgroundColor: Colors.white,
-        body: SafeArea(
-          child: ListView(
-            padding: EdgeInsets.all(10),
-            children: <Widget>[
-              Container(
+        body: Form(
+          key: formKey,
+          child: SafeArea(
+            child: ListView(
+              padding: EdgeInsets.all(10),
+              children: <Widget>[
+                SizedBox(height: screenHeight / 10),
+                Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
                   child: Text(
-                    'Welcome to the /nSmartFarm ',
+                    'Welcome back! ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'SmartFarm ',
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 30),
-                  )),
-              Container(
+                  ),
+                ),
+                Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
                   child: Text(
                     'Sign in',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red[900],
-                    ),
-                  )),
-              Container(
-                padding: EdgeInsets.all(10),
-                child: TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'User Name',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: TextField(
-                  obscureText: true,
+                TTextFormField(
+                  controller: emailController,
+                  iconData: Icons.email,
+                  text: 'email',
+                  validator: (value) => EmailValidator.validate(value!)
+                      ? null
+                      : "Please enter a valid email",
+                ),
+                SizedBox(height: 20),
+                TTextFormField(
                   controller: passwordController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                  ),
+                  iconData: Icons.lock,
+                  obscureText: true,
+                  text: 'password',
+                  validator: (value) => value!.length > 7
+                      ? null
+                      : "Password has to be more than 6 characters",
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/forgot_password');
-                },
-                child: Text(
-                  'Forgot Password',
-                  style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ),
-              ),
-              Container(
-                height: 50,
-                child: ElevatedButton(
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/forgot_password');
+                  },
                   child: Text(
-                    'Login',
+                    'Forgot Password',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  onPressed: () {
-                    print(nameController.text);
-                    print(passwordController.text);
-                    Navigator.pushReplacementNamed(
-                        context, '/bottomNavigation');
-                  },
                 ),
-              ),
-              Container(
-                  child: Center(
-                child: Row(
+                TButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      final completer = Completer();
+                      showBlockDialog(context, dismissCompleter: completer);
+
+                      final user = User(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      );
+
+                      final auth = context.read(authServiceProvider);
+
+                      await auth
+                          .signIn(
+                        email: user.email,
+                        password: user.password,
+                      )
+                          .then((value) {
+                            print(value);
+                        completer.complete();
+                      }).catchError((onError) {
+                        completer.complete();
+                        showToast(
+                          context,
+                          message: 'An error occured try again.',
+                        );
+                      });
+                    }
+                  },
+                  text: 'Login',
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text('Does not have account? '),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
-                      child: Container(
-                        color: Colors.green,
-                        child: TextButton(
-                          child: Text(
-                            'Sign up',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              letterSpacing: 1.0,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/signup');
-                          },
+                    TextButton(
+                      child: Text(
+                        'Sign up',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 20,
+                          letterSpacing: 1.0,
                         ),
                       ),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/signup');
+                      },
                     )
                   ],
-                ),
-              ))
-            ],
+                )
+              ],
+            ),
           ),
         ));
   }
