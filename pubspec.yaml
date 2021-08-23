@@ -30,6 +30,17 @@ dependencies:
   cupertino_icons: ^1.0.2
   animated_splash_screen: ^1.1.0
   equatable: ^2.0.3
+  flutter_riverpod: ^0.14.0+3
+  firebase_auth: ^1.2.0
+  firebase_core: ^1.1.1
+  cloud_firestore: ^2.1.0
+  firebase_storage: ^8.1.0
+  path: ^1.8.0
+  path_provider: ^2.0.2
+  flash: ^2.0.0
+  email_validator: ^2.0.1
+  flutter_svg: ^0.22.0
+  image_picker: ^0.8.3+3
 
 dev_dependencies:
   flutter_test:
